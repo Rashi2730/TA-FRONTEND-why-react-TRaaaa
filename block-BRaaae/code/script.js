@@ -27,8 +27,30 @@ input.addEventListener('keyup', (e) => {
 function handleChange(e) {
   let id = e.target.id;
   allMovies[id].watched = !allMovies[id].watched;
-  createUI();
+  createUI(allMovies, root);
 }
+
+function createUI(dataList = allMovies, rootElm = root) {
+  //   rootElm.innerHTML = '';
+  let movieUI = dataList.map((data, i) => {
+    return React.createElement(
+      'li',
+      {},
+      React.createElement('p', null, data.name),
+      React.createElement(
+        'button',
+        {
+          id: i,
+          onClick: handleChange,
+        },
+        data.watched ? 'Watched' : 'To Watch'
+      )
+    );
+  });
+  ReactDOM.render(movieUI, rootElm);
+}
+
+createUI(allMovies, root);
 
 // function createElement(type, attr, ...children) {
 //   let element = document.createElement(type);
@@ -54,27 +76,3 @@ function handleChange(e) {
 //   });
 //   return element;
 // }
-
-let element = React.createElement;
-function createUI(dataList = allMovies, rootElm = root) {
-  //   rootElm.innerHTML = '';
-  let movieUI = dataList.map((data, i) => {
-    let li = element(
-      'li',
-      {},
-      element('p', null, data.name),
-      element(
-        'button',
-        {
-          id: i,
-          onclick: handleChange,
-        },
-        data.watched ? 'Watched' : 'To Watch'
-      )
-    );
-    return li;
-  });
-  ReactDOM.render(movieUI, rootElm);
-}
-
-createUI(allMovies, root);
